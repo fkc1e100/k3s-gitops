@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hermes-demo
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hermes-agent-config
+  namespace: hermes-demo
+data:
+  agent.status: "active"
+  managed.by: "hermes-local"
