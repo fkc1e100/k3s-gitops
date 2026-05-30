@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hermes-gateway
+  namespace: argocd
+spec:
+  project: default
+  source:
+    path: hermes-gateway
+    repoURL: http://gitea-http.gitea.svc:3000/fcurrie/k3s-gitops.git
+    targetRevision: HEAD
+  destination:
+    namespace: hermes-system
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
