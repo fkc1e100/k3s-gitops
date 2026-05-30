@@ -68,6 +68,8 @@ spec:
             requests:
               cpu: 50m
               memory: 64Mi
+        kubeControllerManager:
+          enabled: false
         alertmanager:
           enabled: false
         vmalert:
