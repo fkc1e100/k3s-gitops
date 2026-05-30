@@ -18,10 +18,10 @@ spec:
             resources:
               limits:
                 cpu: 100m
-                memory: 512Mi
+                memory: 128Mi
               requests:
                 cpu: 20m
-                memory: 256Mi
+                memory: 64Mi
         vmsingle:
           enabled: true
           spec:
