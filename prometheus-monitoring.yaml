@@ -6,37 +6,78 @@ metadata:
 spec:
   project: default
   source:
-    chart: kube-prometheus-stack
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 69.3.1
+    chart: victoria-metrics-k8s-stack
+    repoURL: https://victoriametrics.github.io/helm-charts
+    targetRevision: 0.81.0
     helm:
       values: |
-        prometheus:
-          prometheusSpec:
-            retention: 3d
-            retentionSize: 4GB
-            storageSpec:
-              volumeClaimTemplate:
-                spec:
-                  storageClassName: longhorn
-                  accessModes: ["ReadWriteOnce"]
-                  resources:
-                    requests:
-                      storage: 5Gi
+        vmagent:
+          enabled: true
+          spec:
+            resources:
+              limits:
+                cpu: 100m
+                memory: 128Mi
+              requests:
+                cpu: 20m
+                memory: 64Mi
+        vmsingle:
+          enabled: true
+          spec:
+            replicaCount: 1
+            retentionPeriod: "1"
+            resources:
+              limits:
+                cpu: 500m
+                memory: 512Mi
+              requests:
+                cpu: 100m
+                memory: 256Mi
+            storage:
+              storageClassName: longhorn
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 20Gi
+            nodeSelector:
+              tier: high-perf
         prometheus-node-exporter:
+          enabled: true
           resources:
-            requests:
+            limits:
               cpu: 50m
               memory: 50Mi
-            limits:
-              cpu: 150m
-              memory: 100Mi
+            requests:
+              cpu: 10m
+              memory: 20Mi
         grafana:
+          enabled: true
           adminPassword: admin
           persistence:
             enabled: true
             storageClassName: longhorn
             size: 2Gi
+          nodeSelector:
+            tier: high-perf
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+        alertmanager:
+          enabled: false
+        kube-state-metrics:
+          enabled: true
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 20m
+              memory: 40Mi
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
