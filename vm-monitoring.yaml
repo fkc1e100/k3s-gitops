@@ -70,6 +70,8 @@ spec:
               memory: 64Mi
         kubeControllerManager:
           enabled: false
+          service:
+            enabled: false
         alertmanager:
           enabled: false
         vmalert:
