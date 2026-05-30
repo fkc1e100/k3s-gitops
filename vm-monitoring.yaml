@@ -18,10 +18,10 @@ spec:
             resources:
               limits:
                 cpu: 100m
-                memory: 128Mi
+                memory: 512Mi
               requests:
                 cpu: 20m
-                memory: 64Mi
+                memory: 256Mi
         vmsingle:
           enabled: true
           spec:
@@ -64,10 +64,10 @@ spec:
           resources:
             limits:
               cpu: 200m
-              memory: 128Mi
+              memory: 512Mi
             requests:
               cpu: 50m
-              memory: 64Mi
+              memory: 256Mi
         kubeControllerManager:
           enabled: false
           service:
