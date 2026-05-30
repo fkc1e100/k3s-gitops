@@ -1,4 +1,28 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: hermes-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hermes-admin
+  namespace: hermes-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hermes-admin-binding
+subjects:
+- kind: ServiceAccount
+  name: hermes-admin
+  namespace: hermes-system
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: hermes-home-pvc
@@ -28,6 +52,9 @@ spec:
       labels:
         app: hermes-gateway
     spec:
+      serviceAccountName: hermes-admin
+      nodeSelector:
+        kubernetes.io/hostname: i7-ubu-59d1a7
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -51,8 +78,3 @@ spec:
       - name: hermes-home
         persistentVolumeClaim:
           claimName: hermes-home-pvc
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: hermes-system
