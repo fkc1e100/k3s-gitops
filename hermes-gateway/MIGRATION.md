@@ -8,6 +8,12 @@ Follow these steps to migrate your Hermes gateway from the local systemd-control
 
 ## Steps
 
+### 0. Build and Push Container Image
+1. Build the image:
+   `docker build -t 192.168.4.247:32000/fcurrie/hermes-gateway:latest ./hermes-gateway/`
+2. Push to local registry:
+   `docker push 192.168.4.247:32000/fcurrie/hermes-gateway:latest`
+
 ### 1. Stop the Local Service
 Run these commands on the node where Hermes is currently running (usually `ubuntu-dev`):
 
