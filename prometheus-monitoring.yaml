@@ -69,6 +69,8 @@ spec:
               memory: 64Mi
         alertmanager:
           enabled: false
+        vmalert:
+          enabled: false
         kube-state-metrics:
           enabled: true
           resources:
