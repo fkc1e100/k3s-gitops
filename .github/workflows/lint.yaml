@@ -20,6 +20,14 @@ jobs:
           file_or_dir: .
           config_file: .yamllint.yaml
 
+      - name: Validate Grafana Dashboard JSON Syntax
+        run: |
+          if [ -f monitoring/sre-dashboard.yaml ]; then
+            echo "Checking if SRE Dashboard has valid JSON embedded..."
+            yq eval '.data["sre-dashboard.json"]' monitoring/sre-dashboard.yaml | jq . > /dev/null
+            echo "✓ Grafana SRE Dashboard JSON is syntactically valid!"
+          fi
+
   kubeconform:
     name: Kubeconform Schema Validation
     runs-on: ubuntu-latest
