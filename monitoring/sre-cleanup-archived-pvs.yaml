@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sre-cleanup-archived-pvs
+  namespace: monitoring
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      nodeName: i7-ubu-59d1a7
+      containers:
+      - name: cleaner
+        image: alpine
+        command: ["/bin/sh", "-c", "echo 'Starting cleanup of archived PVs...'; find /host-srv/nfs/kubedata -maxdepth 1 -name 'archived-*' -exec rm -rf {} \\; && echo 'Cleanup complete!'"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: host-srv
+          mountPath: /host-srv
+      restartPolicy: Never
+      volumes:
+      - name: host-srv
+        hostPath:
+          path: /srv
+          type: Directory
