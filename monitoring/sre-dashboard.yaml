@@ -8,251 +8,251 @@ metadata:
     app.kubernetes.io/component: grafana
 data:
   sre-dashboard.json: |
-{
-  "annotations": {
-    "list": []
-  },
-  "editable": true,
-  "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
-  "links": [],
-  "liveNow": false,
-  "panels": [
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
+      "annotations": {
+        "list": []
       },
-      "id": 1,
-      "title": "Node Status & Resources (SRE)",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "lineWidth": 2
-          },
-          "unit": "percent"
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 1
-      },
-      "id": 2,
-      "targets": [
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "links": [],
+      "liveNow": false,
+      "panels": [
         {
-          "expr": "100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))",
-          "legendFormat": "{{node}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Memory Usage (%) by Physical Node",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
           },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "lineWidth": 2
-          },
-          "unit": "bytes"
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 1
-      },
-      "id": 3,
-      "targets": [
+          "id": 1,
+          "title": "Node Status & Resources (SRE)",
+          "type": "row"
+        },
         {
-          "expr": "node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes",
-          "legendFormat": "{{node}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Active SWAP Space Consumption (SD-Card Backed)",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 9
-      },
-      "id": 4,
-      "title": "QoS & Eviction Risk Control",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
               },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          }
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 10
-      },
-      "id": 5,
-      "targets": [
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "lineWidth": 2
+              },
+              "unit": "percent"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "id": 2,
+          "targets": [
+            {
+              "expr": "100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))",
+              "legendFormat": "{{node}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Memory Usage (%) by Physical Node",
+          "type": "timeseries"
+        },
         {
-          "expr": "sum(kube_pod_status_phase{phase=\"Failed\"}) by (namespace, pod)",
-          "legendFormat": "{{namespace}}/{{pod}}",
-          "refId": "A"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "lineWidth": 2
+              },
+              "unit": "bytes"
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "id": 3,
+          "targets": [
+            {
+              "expr": "node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes",
+              "legendFormat": "{{node}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Active SWAP Space Consumption (SD-Card Backed)",
+          "type": "timeseries"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 9
+          },
+          "id": 4,
+          "title": "QoS & Eviction Risk Control",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
+            }
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 10
+          },
+          "id": 5,
+          "targets": [
+            {
+              "expr": "sum(kube_pod_status_phase{phase=\"Failed\"}) by (namespace, pod)",
+              "legendFormat": "{{namespace}}/{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Failed / Evicted Pods Track",
+          "type": "timeseries"
+        },
+        {
+          "id": 6,
+          "title": "Ingress Error Rate (Errors)",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 18
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(nginx_ingress_controller_requests{status=~\"5..\"}[5m]))",
+              "legendFormat": "HTTP 5xx Errors/s",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "title": "99th Percentile Latency (Latency)",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 18
+          },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket[5m])) by (le))",
+              "legendFormat": "P99 Latency (s)",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "title": "CPU Saturation (Saturation)",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 26
+          },
+          "targets": [
+            {
+              "expr": "node_load5",
+              "legendFormat": "{{node}} Load Avg",
+              "refId": "A"
+            }
+          ]
         }
       ],
-      "title": "Failed / Evicted Pods Track",
-      "type": "timeseries"
-    },
-    {
-      "id": 6,
-      "title": "Ingress Error Rate (Errors)",
-      "type": "timeseries",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
+      "refresh": "10s",
+      "schemaVersion": 39,
+      "tags": [
+        "SRE",
+        "Kubernetes",
+        "VictoriaMetrics"
+      ],
+      "templating": {
+        "list": [
+          {
+            "current": {},
+            "hide": 0,
+            "name": "datasource",
+            "options": [],
+            "query": "prometheus",
+            "refresh": 1,
+            "type": "datasource"
+          }
+        ]
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 18
+      "time": {
+        "from": "now-1h",
+        "to": "now"
       },
-      "targets": [
-        {
-          "expr": "sum(rate(nginx_ingress_controller_requests{status=~\"5..\"}[5m]))",
-          "legendFormat": "HTTP 5xx Errors/s",
-          "refId": "A"
-        }
-      ]
-    },
-    {
-      "id": 7,
-      "title": "99th Percentile Latency (Latency)",
-      "type": "timeseries",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 18
-      },
-      "targets": [
-        {
-          "expr": "histogram_quantile(0.99, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket[5m])) by (le))",
-          "legendFormat": "P99 Latency (s)",
-          "refId": "A"
-        }
-      ]
-    },
-    {
-      "id": 8,
-      "title": "CPU Saturation (Saturation)",
-      "type": "timeseries",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 26
-      },
-      "targets": [
-        {
-          "expr": "node_load5",
-          "legendFormat": "{{node}} Load Avg",
-          "refId": "A"
-        }
-      ]
+      "title": "K3s Cluster SRE Control Tower",
+      "uid": "k3s_sre_control_tower"
     }
-  ],
-  "refresh": "10s",
-  "schemaVersion": 39,
-  "tags": [
-    "SRE",
-    "Kubernetes",
-    "VictoriaMetrics"
-  ],
-  "templating": {
-    "list": [
-      {
-        "current": {},
-        "hide": 0,
-        "name": "datasource",
-        "options": [],
-        "query": "prometheus",
-        "refresh": 1,
-        "type": "datasource"
-      }
-    ]
-  },
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "title": "K3s Cluster SRE Control Tower",
-  "uid": "k3s_sre_control_tower"
-}
