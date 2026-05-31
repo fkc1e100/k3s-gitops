@@ -61,7 +61,8 @@ Our cluster hosts several custom services, monitoring solutions, and development
 *   **Radio Scanner SDR (`radio-scanner`):** Custom SDR (Software Defined Radio) receiver service interfacing with hardware scanners to decode local radio signals.
 
 ### 3. Monitoring & Analytics
-*   **VictoriaMetrics Stack (`monitoring`):** High-performance time-series logging cluster containing `vmsingle`, a configured `vmagent` (resource-optimized), and node exporters tracking historical loads.
+*   **VictoriaMetrics Stack (`monitoring`):** High-performance time-series logging cluster containing `vmsingle`, a configured `vmagent` (resource-optimized), and node exporters tracking historical loads. 
+    *   **SRE Grafana Dashboard:** [grafana.192.168.4.247.sslip.io](http://grafana.192.168.4.247.sslip.io)
 *   **Eero Monitoring (`eero-monitoring`):** Exporters tracking home Eero network statuses, Speedtest (Ookla) metrics, and custom Grafana dashboards for local topology visualization.
 
 ### 4. Storage & Platform Infrastructure
