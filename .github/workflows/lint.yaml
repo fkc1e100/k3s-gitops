@@ -37,7 +37,7 @@ jobs:
 
       - name: Run Kubeconform
         run: |
-          kubeconform -summary -strict -ignore-missing-schemas .
+          find . -type f \( -name "*.yaml" -o -name "*.yml" \) -not -path '*/.*' | xargs kubeconform -summary -strict -ignore-missing-schemas
 
   python-lint:
     name: Python Lint (Ruff)
@@ -68,3 +68,4 @@ jobs:
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: hermes-gateway/Dockerfile
+          failure-threshold: error
