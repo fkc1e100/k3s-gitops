@@ -1,0 +1,35 @@
+name: Lint and Validate Kubernetes Manifests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  yaml-lint:
+    name: YAML Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run yamllint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: .
+          config_file: .yamllint.yaml
+
+  kubeconform:
+    name: Kubeconform Schema Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Kubeconform
+        uses: yannh/kubeconform-action@v0.1.0
+        with:
+          kubeconform_version: v0.6.3
+          files: "."
+          additional_schema_paths: 'https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.28.2-standalone-strict/{{.ResourceKind}}{{.ResourceAPIVersion}}.json'
