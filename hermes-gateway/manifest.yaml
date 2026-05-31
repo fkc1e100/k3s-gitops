@@ -43,7 +43,7 @@ metadata:
   labels:
     app: hermes-gateway
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: hermes-gateway
@@ -53,8 +53,6 @@ spec:
         app: hermes-gateway
     spec:
       serviceAccountName: hermes-admin
-      nodeSelector:
-        kubernetes.io/hostname: i7-ubu-59d1a7
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -64,6 +62,17 @@ spec:
                 operator: In
                 values:
                 - high-perf
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - hermes-gateway
+              topologyKey: kubernetes.io/hostname
       containers:
       - name: hermes
         image: 192.168.4.247:32000/fcurrie/hermes-gateway:latest
