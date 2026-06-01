@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - apps/argocd/k3s-gitops-apps.yaml
+  - apps/argocd/sre-tools.yaml
+  - apps/argocd/cluster-storage.yaml
+  - apps/argocd/cluster-nodes.yaml
+  - apps/argocd/demo-apps.yaml
+  - apps/argocd/hermes-app.yaml
+  - apps/argocd/vm-monitoring.yaml
+  - apps/argocd/hello-rpi-dashboard.yaml
+  - apps/argocd/led-screen.yaml
+  - apps/argocd/radio-scanner.yaml

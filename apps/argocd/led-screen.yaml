@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: led-screen
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync: "true"
+    argocd.argoproj.io/tracking-id: led-screen:argoproj.io/Application:argocd/led-screen
+spec:
+  project: default
+  source:
+    repoURL: http://gitea.192.168.4.247.sslip.io/fcurrie/led-screen.git
+    targetRevision: HEAD
+    path: k8s
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: led-screen
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
