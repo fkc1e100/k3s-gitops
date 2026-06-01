@@ -15,6 +15,11 @@ spec:
         vmagent:
           enabled: true
           spec:
+            extraArgs:
+              memory.allowedPercent: "60"
+              remoteWrite.queues: "1"
+              remoteWrite.maxBlockSize: "1048576"
+              remoteWrite.tmpDataPath: "/tmp"
             resources:
               limits:
                 cpu: 100m
@@ -45,6 +50,17 @@ spec:
               tier: high-perf
         prometheus-node-exporter:
           enabled: true
+          extraArgs:
+            - --no-collector.mdadm
+            - --no-collector.zfs
+            - --no-collector.bcache
+            - --no-collector.infiniband
+          vmScrape:
+            enabled: true
+            spec:
+              endpoints:
+              - port: metrics
+                interval: 60s
           resources:
             limits:
               cpu: 50m
