@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -18,16 +17,31 @@ spec:
       hostPID: true
       hostNetwork: true
       hostIPC: true
+      priorityClassName: system-node-critical
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
+      - operator: Exists
+        effect: NoExecute
       containers:
       - name: tuner
-        image: alpine:latest
+        image: alpine:3.20.0
         securityContext:
           privileged: true
         command: ["/bin/sh", "-c"]
         args:
         - |
-          nsenter -t 1 -m -u -n -i bash -c '
-          echo 10 > /proc/sys/vm/swappiness
+          nsenter -t 1 -m -u -n -i sh -c '
+          sysctl -w vm.swappiness=10
+          sysctl -w fs.inotify.max_user_watches=524288
+          sysctl -w fs.inotify.max_user_instances=8192
           '
           sleep infinity
+        resources:
+          limits:
+            cpu: 10m
+            memory: 15Mi
+          requests:
+            cpu: 10m
+            memory: 15Mi
       restartPolicy: Always
