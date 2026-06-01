@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     path: hermes-gateway
-    repoURL: http://gitea-http.gitea.svc:3000/fcurrie/k3s-gitops.git
+    repoURL: https://github.com/fkc1e100/k3s-gitops.git
     targetRevision: HEAD
   destination:
     namespace: hermes-system
