@@ -1,51 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: nfs-client-nfs-subdir-external-provisioner
+  namespace: default
 spec:
-  progressDeadlineSeconds: 600
   replicas: 1
-  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: nfs-subdir-external-provisioner
-      release: nfs-client
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
         app: nfs-subdir-external-provisioner
-        release: nfs-client
     spec:
+      serviceAccountName: nfs-client-provisioner
       containers:
-      - env:
-        - name: ARCHIVE_ON_DELETE
-          value: "false"
+      - name: nfs-subdir-external-provisioner
+        image: registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
+        env:
         - name: PROVISIONER_NAME
           value: cluster.local/nfs-client-nfs-subdir-external-provisioner
         - name: NFS_SERVER
           value: 192.168.100.200
         - name: NFS_PATH
           value: /srv/nfs/kubedata
-        image: registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
-        imagePullPolicy: IfNotPresent
-        name: nfs-subdir-external-provisioner
-        resources: {}
-        securityContext: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
+        - name: ARCHIVE_ON_DELETE
+          value: "false"
         volumeMounts:
-        - mountPath: /persistentvolumes
-          name: nfs-subdir-external-provisioner-root
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      serviceAccount: nfs-client-nfs-subdir-external-provisioner
-      serviceAccountName: nfs-client-nfs-subdir-external-provisioner
-      terminationGracePeriodSeconds: 30
+        - name: nfs-root
+          mountPath: /persistentvolumes
       volumes:
-      - name: nfs-subdir-external-provisioner-root
+      - name: nfs-root
         nfs:
-          path: /srv/nfs/kubedata
           server: 192.168.100.200
+          path: /srv/nfs/kubedata
