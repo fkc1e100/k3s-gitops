@@ -5,21 +5,29 @@ metadata:
   name: os-tuner
   namespace: kube-system
   labels:
-    k8s-app: os-tuner
+    app: os-tuner
 spec:
   selector:
     matchLabels:
-      k8s-app: os-tuner
+      app: os-tuner
   template:
     metadata:
       labels:
-        k8s-app: os-tuner
+        app: os-tuner
     spec:
       hostPID: true
+      hostNetwork: true
+      hostIPC: true
       containers:
       - name: tuner
-        image: alpine
-        command: ["/bin/sh", "-c", "echo 10 > /proc/sys/vm/swappiness && sleep infinity"]
+        image: alpine:latest
         securityContext:
           privileged: true
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          nsenter -t 1 -m -u -n -i bash -c '
+          echo 10 > /proc/sys/vm/swappiness
+          '
+          sleep infinity
       restartPolicy: Always
