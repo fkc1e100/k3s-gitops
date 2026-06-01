@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sre-logrotate-i7-ubu-59d1a7
+  namespace: monitoring
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          nodeName: i7-ubu-59d1a7
+          containers:
+          - name: logrotate
+            image: alpine
+            command: ["/bin/sh", "-c", "logrotate -f /etc/logrotate.conf"]
+            securityContext:
+              privileged: true
+            volumeMounts:
+            - name: host-etc
+              mountPath: /etc/logrotate.conf
+              readOnly: true
+            - name: host-logs
+              mountPath: /var/log
+          restartPolicy: OnFailure
+          volumes:
+          - name: host-etc
+            hostPath:
+              path: /etc/logrotate.conf
+          - name: host-logs
+            hostPath:
+              path: /var/log
