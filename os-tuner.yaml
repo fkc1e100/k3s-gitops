@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: os-tuner
+  namespace: kube-system
+  labels:
+    k8s-app: os-tuner
+spec:
+  selector:
+    matchLabels:
+      k8s-app: os-tuner
+  template:
+    metadata:
+      labels:
+        k8s-app: os-tuner
+    spec:
+      hostPID: true
+      containers:
+      - name: tuner
+        image: alpine
+        command: ["/bin/sh", "-c", "echo 10 > /proc/sys/vm/swappiness && sleep infinity"]
+        securityContext:
+          privileged: true
+      restartPolicy: Always
