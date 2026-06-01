@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-kernel-tuner
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: node-kernel-tuner
+  template:
+    metadata:
+      labels:
+        name: node-kernel-tuner
+    spec:
+      containers:
+      - name: tuner
+        image: alpine
+        command: ["/bin/sh", "-c", "sysctl -w vm.swappiness=10 && sleep infinity"]
+        securityContext:
+          privileged: true
+      hostPID: true
