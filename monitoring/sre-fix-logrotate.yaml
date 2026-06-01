@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sre-fix-logrotate
+  namespace: monitoring
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      nodeName: i7-ubu-59d1a7
+      hostPID: true
+      containers:
+      - name: repair-worker
+        image: alpine
+        securityContext:
+          privileged: true
+        command:
+        - "/bin/sh"
+        - "-c"
+        - |
+          echo "=== SRE Logrotate Repair Started ==="
+          if [ -f /host-root/etc/logrotate.d/cloud-init-base ]; then
+            nsenter -t 1 -m -u -i -n rm -f /etc/logrotate.d/cloud-init-base
+            echo "SUCCESS: Deleted duplicate cloud-init-base logrotate configuration file."
+          else
+            echo "INFO: cloud-init-base duplicate config not found."
+          fi
+          
+          echo "Running force log rotation to verify..."
+          nsenter -t 1 -m -u -i -n logrotate -f /etc/logrotate.conf
+          
+          echo "Restarting logrotate.service..."
+          nsenter -t 1 -m -u -i -n systemctl start logrotate.service
+          
+          echo "Verifying systemd unit status..."
+          nsenter -t 1 -m -u -i -n systemctl status logrotate.service
+          
+          echo "=== Repair Succeeded ==="
+      restartPolicy: Never
