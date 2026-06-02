@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sre-logrotate-i7-ubu-59d1a7
+  namespace: monitoring
+  annotations:
+    argocd.argoproj.io/tracking-id: sre-tools:batch/CronJob:monitoring/sre-logrotate-i7-ubu-59d1a7
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - command:
+            - /bin/sh
+            - -c
+            - apk add --no-cache logrotate && logrotate -f /etc/logrotate.conf
+            image: alpine
+            imagePullPolicy: Always
+            name: logrotate
+            securityContext:
+              privileged: true
+            volumeMounts:
+            - mountPath: /etc/logrotate.conf
+              name: host-etc
+              readOnly: true
+            - mountPath: /var/log
+              name: host-logs
+          dnsPolicy: ClusterFirst
+          nodeName: i7-ubu-59d1a7
+          restartPolicy: OnFailure
+          volumes:
+          - hostPath:
+              path: /etc/logrotate.conf
+            name: host-etc
+          - hostPath:
+              path: /var/log
+            name: host-logs
+  schedule: 0 2 * * *
+  successfulJobsHistoryLimit: 3
+  suspend: false
