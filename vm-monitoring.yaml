@@ -40,11 +40,11 @@ spec:
             retentionPeriod: "1"
             resources:
               limits:
-                cpu: 500m
-                memory: 512Mi
+                cpu: 1000m
+                memory: 1536Mi
               requests:
-                cpu: 100m
-                memory: 256Mi
+                cpu: 250m
+                memory: 512Mi
             storage:
               storageClassName: longhorn
               accessModes:
@@ -85,11 +85,11 @@ spec:
             tier: high-perf
           resources:
             limits:
-              cpu: 200m
-              memory: 512Mi
+              cpu: 500m
+              memory: 1024Mi
             requests:
-              cpu: 50m
-              memory: 256Mi
+              cpu: 100m
+              memory: 512Mi
         kubeControllerManager:
           enabled: false
           service:
