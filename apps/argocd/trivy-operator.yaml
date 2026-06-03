@@ -28,6 +28,18 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+        trivyOperator:
+          scanJobTolerations:
+            - key: "hardware"
+              operator: "Equal"
+              value: "low-resource"
+              effect: "NoSchedule"
+        nodeCollector:
+          tolerations:
+            - key: "hardware"
+              operator: "Equal"
+              value: "low-resource"
+              effect: "NoSchedule"
   destination:
     namespace: trivy-system
     server: https://kubernetes.default.svc
