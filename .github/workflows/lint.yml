@@ -1,0 +1,21 @@
+name: Lint ConfigMaps
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Check ConfigMap Status
+        run: |
+          if grep -q 'agent.status: "error"' demo-configmap.yaml; then
+            echo "::error file=demo-configmap.yaml,line=12::Error: agent.status cannot be set to 'error'. It must be set to 'active'."
+            exit 1
+          fi
+          echo "ConfigMap is valid."
