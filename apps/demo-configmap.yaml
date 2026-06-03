@@ -9,5 +9,5 @@ metadata:
   name: hermes-agent-config
   namespace: hermes-demo
 data:
-  agent.status: "active"
+  agent.status: "error"
   managed.by: "hermes-local"
