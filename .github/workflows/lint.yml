@@ -14,8 +14,8 @@ jobs:
 
       - name: Check ConfigMap Status
         run: |
-          if grep -q 'agent.status: "error"' demo-configmap.yaml; then
-            echo "::error file=demo-configmap.yaml,line=12::Error: agent.status cannot be set to 'error'. It must be set to 'active'."
+          if grep -q 'agent.status: "error"' apps/demo-configmap.yaml; then
+            echo "::error file=apps/demo-configmap.yaml,line=12::Error: agent.status cannot be set to 'error'. It must be set to 'active'."
             exit 1
           fi
           echo "ConfigMap is valid."
