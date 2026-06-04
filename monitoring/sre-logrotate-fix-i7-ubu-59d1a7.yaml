@@ -13,7 +13,7 @@ spec:
           containers:
           - name: logrotate
             image: alpine
-            command: ["/bin/sh", "-c", "logrotate -f /etc/logrotate.conf"]
+            command: ["/bin/sh", "-c", "apk add --no-cache logrotate && logrotate -f /etc/logrotate.conf"]
             securityContext:
               privileged: true
             volumeMounts:
