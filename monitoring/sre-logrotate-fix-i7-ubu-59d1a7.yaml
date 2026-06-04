@@ -20,6 +20,9 @@ spec:
             - name: host-etc
               mountPath: /etc/logrotate.conf
               readOnly: true
+            - name: host-logrotated
+              mountPath: /etc/logrotate.d/
+              readOnly: true
             - name: host-logs
               mountPath: /var/log
           restartPolicy: OnFailure
@@ -27,6 +30,9 @@ spec:
           - name: host-etc
             hostPath:
               path: /etc/logrotate.conf
+          - name: host-logrotated
+            hostPath:
+              path: /etc/logrotate.d/
           - name: host-logs
             hostPath:
               path: /var/log

@@ -16,17 +16,17 @@ spec:
           enabled: true
           spec:
             extraArgs:
-              memory.allowedPercent: "60"
+              memory.allowedPercent: "40"
               remoteWrite.queues: "1"
               remoteWrite.maxBlockSize: "1048576"
               remoteWrite.tmpDataPath: "/tmp"
             resources:
               limits:
-                cpu: 100m
-                memory: 512Mi
+                cpu: 500m
+                memory: 400Mi
               requests:
-                cpu: 20m
-                memory: 256Mi
+                cpu: 100m
+                memory: 200Mi
         vmsingle:
           enabled: true
           spec:
@@ -79,11 +79,11 @@ spec:
             tier: high-perf
           resources:
             limits:
-              cpu: 200m
-              memory: 512Mi
+              cpu: 500m
+              memory: 1Gi
             requests:
-              cpu: 50m
-              memory: 256Mi
+              cpu: 100m
+              memory: 512Mi
         kubeControllerManager:
           enabled: false
           service:

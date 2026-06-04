@@ -44,6 +44,8 @@ To prevent network and I/O bottlenecks inherent in running low-resource (1GB RAM
 *   **Offloaded Container Runtime:** Container layers (`/var/lib/rancher/k3s/agent/containerd`) are symlinked and offloaded to local SD card partitions formatted as `ext4` and mounted at `/mnt/sdcard/`.
 *   **Local Swap:** Swap is enabled using local SD cards (`/mnt/sdcard/swap`) to absorb memory spikes and prevent kernel lockups. NFS-backed swap is completely disabled.
 *   **Inotify Tuning:** Kernel watch limits are tuned high (`fs.inotify.max_user_watches=524288`, `fs.inotify.max_user_instances=8192`) on all low-resource nodes to prevent pod crash loops during heavy churn.
+*   **K3s Server Component Tuning:** Disable unused components (`servicelb`, `traefik`) in the master node configuration (`--no-deploy servicelb --disable traefik` or config equivalents) to prevent scheduling unnecessary daemonsets (`svclb-traefik`, etc.) on 1GB worker nodes.
+*   **Kernel ZRAM Tuning:** ZRAM with `zstd` compression is automatically enabled cluster-wide via `./nodes/os-tuner.yaml` daemonset to mitigate memory pressure.
 
 ---
 
