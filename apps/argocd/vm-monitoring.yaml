@@ -27,6 +27,17 @@ spec:
               requests:
                 cpu: 100m
                 memory: 200Mi
+            # Configure high liveness and readiness probe tolerance directly on the VMAgent spec to prevent timeouts during reloads on diskless RPi nodes
+            livenessProbe:
+              initialDelaySeconds: 15
+              timeoutSeconds: 10
+              periodSeconds: 15
+              failureThreshold: 10
+            readinessProbe:
+              initialDelaySeconds: 15
+              timeoutSeconds: 10
+              periodSeconds: 15
+              failureThreshold: 10
         vmsingle:
           enabled: true
           spec:
@@ -68,6 +79,17 @@ spec:
             requests:
               cpu: 10m
               memory: 20Mi
+          extraArgs:
+            - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+          # Increase probe timeouts and startup/failure thresholds to avoid restarts/timeout logs on diskless RPi nodes
+          livenessProbe:
+            timeoutSeconds: 10
+            failureThreshold: 6
+            periodSeconds: 15
+          readinessProbe:
+            timeoutSeconds: 10
+            failureThreshold: 6
+            periodSeconds: 15
         grafana:
           enabled: true
           adminPassword: admin
