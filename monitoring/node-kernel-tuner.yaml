@@ -18,4 +18,11 @@ spec:
         command: ["/bin/sh", "-c", "sysctl -w vm.swappiness=10 && sleep infinity"]
         securityContext:
           privileged: true
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: true
+          runAsNonRoot: false
+          runAsUser: 0
+          capabilities:
+            drop:
+            - ALL
       hostPID: true
