@@ -22,11 +22,11 @@ spec:
               remoteWrite.tmpDataPath: "/tmp"
             resources:
               limits:
+                cpu: 500m
+                memory: 1Gi
+              requests:
                 cpu: 100m
                 memory: 512Mi
-              requests:
-                cpu: 20m
-                memory: 256Mi
         vmsingle:
           enabled: true
           spec:
@@ -79,11 +79,11 @@ spec:
             tier: high-perf
           resources:
             limits:
-              cpu: 200m
-              memory: 512Mi
+              cpu: 500m
+              memory: 1Gi
             requests:
-              cpu: 50m
-              memory: 256Mi
+              cpu: 100m
+              memory: 512Mi
         kubeControllerManager:
           enabled: false
           service:
