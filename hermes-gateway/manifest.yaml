@@ -77,6 +77,24 @@ spec:
       - name: hermes
         image: 192.168.4.247:32000/fcurrie/hermes-gateway:latest
         imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 10001
+          runAsGroup: 10001
+          capabilities:
+            drop:
+            - ALL
+          seccompProfile:
+            type: RuntimeDefault
         env:
         - name: HERMES_HOME
           value: "/workspace/.hermes"
