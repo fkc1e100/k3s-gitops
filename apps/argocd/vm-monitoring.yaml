@@ -16,17 +16,17 @@ spec:
           enabled: true
           spec:
             extraArgs:
-              memory.allowedPercent: "60"
+              memory.allowedPercent: "40"
               remoteWrite.queues: "1"
               remoteWrite.maxBlockSize: "1048576"
               remoteWrite.tmpDataPath: "/tmp"
             resources:
               limits:
                 cpu: 500m
-                memory: 1Gi
+                memory: 400Mi
               requests:
                 cpu: 100m
-                memory: 512Mi
+                memory: 200Mi
         vmsingle:
           enabled: true
           spec:

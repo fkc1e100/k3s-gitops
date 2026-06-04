@@ -35,6 +35,14 @@ spec:
           sysctl -w vm.swappiness=10
           sysctl -w fs.inotify.max_user_watches=524288
           sysctl -w fs.inotify.max_user_instances=8192
+
+          # Enable ZRAM with zstd compression to mitigate memory pressure
+          if ! grep -q zram /proc/swaps; then
+            modprobe zram
+            zramctl --find --size 512M --algorithm zstd
+            mkswap /dev/zram0
+            swapon /dev/zram0 -p 32767
+          fi
           '
           sleep infinity
         resources:
