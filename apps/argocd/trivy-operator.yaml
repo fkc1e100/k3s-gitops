@@ -12,6 +12,8 @@ spec:
     helm:
       values: |
         operator:
+          config:
+            OPERATOR_CONCURRENT_SCAN_JOBS_LIMIT: "2"
           replicas: 1
           resources:
             limits:
@@ -32,12 +34,16 @@ spec:
           scanJobTolerations:
             - key: "hardware"
               operator: "Equal"
+          config:
+            OPERATOR_CONCURRENT_SCAN_JOBS_LIMIT: "2"
               value: "low-resource"
               effect: "NoSchedule"
         nodeCollector:
           tolerations:
             - key: "hardware"
               operator: "Equal"
+          config:
+            OPERATOR_CONCURRENT_SCAN_JOBS_LIMIT: "2"
               value: "low-resource"
               effect: "NoSchedule"
   destination:
