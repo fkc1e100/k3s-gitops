@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  name: sre-disk-prune-rpi-3bp-e9b3e3
+  namespace: monitoring
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      nodeName: rpi-3bp-e9b3e3
+      containers:
+      - name: pruner
+        image: rancher/k3s:v1.28.2-k3s1
+        command: ["/bin/sh", "-c", "echo 'runtime-endpoint: unix:///run/k3s/containerd/containerd.sock' > /bin/crictl.yaml && crictl rmi --prune"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: containerd-sock
+          mountPath: /run/k3s/containerd/containerd.sock
+      restartPolicy: Never
+      volumes:
+      - name: containerd-sock
+        hostPath:
+          path: /run/k3s/containerd/containerd.sock
+          type: Socket

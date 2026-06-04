@@ -15,13 +15,18 @@ spec:
         vmagent:
           enabled: true
           spec:
+            extraArgs:
+              memory.allowedPercent: "40"
+              remoteWrite.queues: "1"
+              remoteWrite.maxBlockSize: "1048576"
+              remoteWrite.tmpDataPath: "/tmp"
             resources:
               limits:
-                cpu: 200m
-                memory: 256Mi
+                cpu: 500m
+                memory: 400Mi
               requests:
-                cpu: 50m
-                memory: 128Mi
+                cpu: 100m
+                memory: 200Mi
             # Configure high liveness and readiness probe tolerance directly on the VMAgent spec to prevent timeouts during reloads on diskless RPi nodes
             livenessProbe:
               initialDelaySeconds: 15
@@ -56,6 +61,17 @@ spec:
               tier: high-perf
         prometheus-node-exporter:
           enabled: true
+          extraArgs:
+            - --no-collector.mdadm
+            - --no-collector.zfs
+            - --no-collector.bcache
+            - --no-collector.infiniband
+          vmScrape:
+            enabled: true
+            spec:
+              endpoints:
+              - port: metrics
+                interval: 60s
           resources:
             limits:
               cpu: 50m
@@ -85,11 +101,11 @@ spec:
             tier: high-perf
           resources:
             limits:
-              cpu: 200m
-              memory: 512Mi
+              cpu: 500m
+              memory: 1Gi
             requests:
-              cpu: 50m
-              memory: 256Mi
+              cpu: 100m
+              memory: 512Mi
         kubeControllerManager:
           enabled: false
           service:
