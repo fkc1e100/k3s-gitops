@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: os-tuner
+  namespace: kube-system
+  labels:
+    app: os-tuner
+spec:
+  selector:
+    matchLabels:
+      app: os-tuner
+  template:
+    metadata:
+      labels:
+        app: os-tuner
+    spec:
+      hostPID: true
+      hostNetwork: true
+      hostIPC: true
+      priorityClassName: system-node-critical
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
+      - operator: Exists
+        effect: NoExecute
+      containers:
+      - name: tuner
+        image: alpine:3.20.0
+        securityContext:
+          privileged: true
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: true
+          runAsNonRoot: false
+          runAsUser: 0
+          capabilities:
+            drop:
+            - ALL
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          nsenter -t 1 -m -u -n -i sh -c '
+          # Virtual Memory & Swappiness
+          sysctl -w vm.swappiness=10
+          sysctl -w vm.dirty_background_ratio=5
+          sysctl -w vm.dirty_ratio=10
+
+          # File Inotify Limits
+          sysctl -w fs.inotify.max_user_watches=524288
+          sysctl -w fs.inotify.max_user_instances=8192
+
+          # Network Backlog & TCP Buffers
+          sysctl -w net.core.somaxconn=32768
+          sysctl -w net.ipv4.tcp_max_syn_backlog=16384
+          sysctl -w net.core.netdev_max_backlog=16384
+
+          # Enable ZRAM with zstd compression to mitigate memory pressure
+          if ! grep -q zram /proc/swaps; then
+            modprobe zram
+            zramctl --find --size 512M --algorithm zstd
+            mkswap /dev/zram0
+            swapon /dev/zram0 -p 32767
+          fi
+          '
+          sleep infinity
+        resources:
+          limits:
+            cpu: 50m
+            memory: 32Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
+      restartPolicy: Always
